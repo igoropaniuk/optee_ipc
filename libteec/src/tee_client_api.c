@@ -1,6 +1,6 @@
-/* SPDX-License-Identifier: BSD-2-Clause */
 /*
- * Copyright (c) 2018, Linaro Limited
+ * Copyright (c) 2015-2016, Linaro Limited
+ * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -25,13 +25,59 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef OPTEE_SYSDEPS_H
-#define OPTEE_SYSDEPS_H
 
-void *optee_malloc(size_t size);
-void optee_free(void *ptr);
+#include <teec_sysdeps.h>
+#include <teec_debug.h>
 
-void optee_print(const char *msg);
-void optee_printv(const char* message, ...);
+#include <tee_client_api.h>
 
-#endif /* OPTEE_SYSDEPS_H */
+#ifndef __aligned
+#define __aligned(x) __attribute__((__aligned__(x)))
+#endif
+
+TEEC_Result TEEC_InitializeContext(const char *name, TEEC_Context *ctx)
+{
+	return TEEC_SUCCESS;
+}
+
+void TEEC_FinalizeContext(TEEC_Context *ctx)
+{
+}
+
+
+TEEC_Result TEEC_OpenSession(TEEC_Context *ctx, TEEC_Session *session,
+			const TEEC_UUID *destination,
+			uint32_t connection_method, const void *connection_data,
+			TEEC_Operation *operation, uint32_t *ret_origin)
+{
+	return TEEC_SUCCESS;
+}
+
+void TEEC_CloseSession(TEEC_Session *session)
+{
+}
+
+TEEC_Result TEEC_InvokeCommand(TEEC_Session *session, uint32_t cmd_id,
+			TEEC_Operation *operation, uint32_t *error_origin)
+{
+	return TEEC_SUCCESS;
+}
+
+void TEEC_RequestCancellation(TEEC_Operation *operation)
+{
+}
+
+TEEC_Result TEEC_RegisterSharedMemory(TEEC_Context *ctx, TEEC_SharedMemory *shm)
+{
+	return TEEC_SUCCESS;
+}
+
+
+TEEC_Result TEEC_AllocateSharedMemory(TEEC_Context *ctx, TEEC_SharedMemory *shm)
+{
+	return TEEC_SUCCESS;
+}
+
+void TEEC_ReleaseSharedMemory(TEEC_SharedMemory *shm)
+{
+}

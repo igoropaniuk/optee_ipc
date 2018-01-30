@@ -26,35 +26,35 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <optee_sysdeps>
-#include <optee_smc.h>
-#include <optee_debug.h>
+#include <teec_debug.h>
+#include <teec_smc.h>
+#include <teec_sysdeps.h>
 
 uint32_t optee_do_call_with_arg()
 {
-	struct optee_rpc_param param = { };
-	uint32_t ret;
-
-	param.a0 = OPTEE_SMC_CALL_WITH_ARG;
-	while (true) {
-		struct arm_smccc_res res;
-
-		smccc_smc(param.a0, param.a1, param.a2, param.a3, param.a4,
-				param.a5, param.a6, param.a7, &res);
-
-		if (res.a0 == OPTEE_SMC_RETURN_ETHREAD_LIMIT) {
-			/*optee_cq_wait_for_completion(&optee->call_queue, &w);*/
-		} else if (OPTEE_SMC_RETURN_IS_RPC(res.a0)) {
-			param.a0 = res.a0;
-			param.a1 = res.a1;
-			param.a2 = res.a2;
-			param.a3 = res.a3;
-			/*optee_handle_rpc(ctx, &param, &call_ctx);*/
-		} else {
-			ret = res.a0;
-			break;
-		}
-	}
-
-	return ret;
+//	struct optee_rpc_param param = { };
+//	uint32_t ret;
+//
+//	param.a0 = OPTEE_SMC_CALL_WITH_ARG;
+//	while (true) {
+//		struct arm_smccc_res res;
+//
+//		smccc_smc(param.a0, param.a1, param.a2, param.a3, param.a4,
+//				param.a5, param.a6, param.a7, &res);
+//
+//		if (res.a0 == OPTEE_SMC_RETURN_ETHREAD_LIMIT) {
+//			/*optee_cq_wait_for_completion(&optee->call_queue, &w);*/
+//		} else if (OPTEE_SMC_RETURN_IS_RPC(res.a0)) {
+//			param.a0 = res.a0;
+//			param.a1 = res.a1;
+//			param.a2 = res.a2;
+//			param.a3 = res.a3;
+//			/*optee_handle_rpc(ctx, &param, &call_ctx);*/
+//		} else {
+//			ret = res.a0;
+//			break;
+//		}
+//	}
+//
+//	return ret;
 }

@@ -1,3 +1,4 @@
+
 /* SPDX-License-Identifier: BSD-2-Clause */
 /*
  * Copyright (c) 2018, Linaro Limited
@@ -25,24 +26,41 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef OPTEE_DEBUG_H
-#define OPTEE_DEBUG_H
+#include <teec_sysdeps.h>
 
-#include <optee_sysdeps.h>
+void *teec_malloc(size_t size)
+{
+	return malloc(size);
+}
 
-#define OPTEE_PRINT_PREFIX "OPTEE IPC"
-#define OPTEE_DEBUG
+void teec_free(void *ptr)
+{
+	free(ptr);
+}
 
-#ifdef OPTEE_DEBUG
-#define DBG(fmt, args...) optee_printv("[" OUTPUT_APP_PREFIX \
-	"] DEBUG: %s:%d:%s(): " fmt "\n", __FILE__, __LINE__, __func__, ##args)
-#else
-#define DBG(fmt, args...)
-#endif
+void teec_print(const char *msg)
+{
+	printf("%s", msg);
+}
 
-#define INFO(fmt, args...) optee_printv("[" OUTPUT_APP_PREFIX \
-					"] INFO: " fmt "\n", ##args)
-#define ERROR(fmt, args...) optee_printv( "[" OUTPUT_APP_PREFIX \
-					"] ERROR: " fmt "\n", ##args)
+void teec_printv(const char* message, ...)
+{
+	va_list ap;
+	const char *m;
 
-#endif /* OPTEE_DEBUG_H */
+	va_start(ap, message);
+	for (m = message; m != NULL; m = va_arg(ap, const char*)) {
+		printf("%s", m);
+	}
+	va_end(ap);
+}
+
+void teec_mutex_lock(teec_mutex_t *mu)
+{
+	pthread_mutex_lock(mu);
+}
+
+void teec_mutex_unlock(teec_mutex_t *mu)
+{
+	pthread_mutex_unlock(mu);
+}

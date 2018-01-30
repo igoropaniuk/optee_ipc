@@ -1,4 +1,3 @@
-
 /* SPDX-License-Identifier: BSD-2-Clause */
 /*
  * Copyright (c) 2018, Linaro Limited
@@ -26,33 +25,18 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <optee_sysdeps.h>
+#ifndef TEE_SYSDEPS_H
+#define TEE_SYSDEPS_H
 
+#include <stdint.h>
+#include <stddef.h>
+#include <stdbool.h>
+#include <limits.h>
 
-void *optee_malloc(size_t size)
-{
-	return malloc(size);
-}
+void *teec_malloc(size_t size);
+void teec_free(void *ptr);
 
-void optee_free(void *ptr)
-{
-	free(ptr);
-}
+void teec_print(const char *msg);
+void teec_printv(const char* message, ...);
 
-void optee_print(const char *msg)
-{
-	printf("%s", msg);
-}
-
-void optee_printv(const char* message, ...)
-{
-	va_list ap;
-	const char *m;
-
-	va_start(ap, message);
-	for (m = message; m != NULL; m = va_arg(ap, const char*)) {
-		printf("%s", m);
-	}
-	va_end(ap);
-}
-
+#endif /* TEE_SYSDEPS_H */

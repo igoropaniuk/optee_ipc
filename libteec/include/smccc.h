@@ -66,6 +66,8 @@
 #define SMCCC_OWNER_TRUSTED_OS	50
 #define SMCCC_OWNER_TRUSTED_OS_END	63
 
+#define asmlinkage CPP_ASMLINKAGE __attribute__((regparm(0)))
+
 struct smccc_res {
 	unsigned long a0;
 	unsigned long a1;
@@ -74,8 +76,8 @@ struct smccc_res {
 };
 
 
-asmlinkage void smccc_smc(unsigned long a0, unsigned long a1,
-			unsigned long a2, unsigned long a3, unsigned long a4,
-			unsigned long a5, unsigned long a6, unsigned long a7,
-			struct arm_smccc_res *res);
+void smccc_smc( unsigned long a0, unsigned long a1,
+		unsigned long a2, unsigned long a3, unsigned long a4,
+		unsigned long a5, unsigned long a6, unsigned long a7,
+		struct arm_smccc_res *res);
 #endif /* SMCCC_H */
