@@ -1,3 +1,4 @@
+
 /* SPDX-License-Identifier: BSD-2-Clause */
 /*
  * Copyright (c) 2018, Linaro Limited
@@ -25,28 +26,50 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef TEE_SYSDEPS_H
-#define TEE_SYSDEPS_H
+#ifndef TEEC_CORE_H
+#define TEEC_CORE_H
 
-#include <stdint.h>
-#include <stddef.h>
-#include <stdbool.h>
-#include <limits.h>
-#include <errno.h>
+#include <teec_sysdeps.h>
 
-typedef uintptr_t phys_addr_t;
-typedef uint8_t u8;
-typedef uint32_t u32;
-typedef uint64_t u64;
+#define TEE_IOCTL_UUID_LEN              16
 
-#define BIT(n) (0x1U << (n))
+struct tee_ioctl_shm_alloc_data {
+	uint64_t size;
+	uint32_t flags;
+	int32_t id;
+};
 
-void *teec_alloc(size_t size);
-void teec_free(void *ptr);
-void *teec_memcpy(void *str1, const void *str2, size_t n);
+struct tee_param {
+	uint64_t attr;
+	uint64_t a;
+	uint64_t b;
+	uint64_t c;
+};
+struct tee_open_session_arg {
+	uint8_t uuid[TEE_IOCTL_UUID_LEN];
+	uint8_t clnt_uuid[TEE_IOCTL_UUID_LEN];
+	uint32_t clnt_login;
+	uint32_t cancel_id;
+	uint32_t session;
+	uint32_t ret;
+	uint32_t ret_origin;
+	uint32_t num_params;
+	/* num_params tells the actual number of element in params */
+	struct tee_param params[];
+};
 
-void teec_print(const char *msg);
-void teec_printv(const char* message, ...);
+static inline void reg_pair_from_64(u32 *reg0, u32 *reg1, u64 val)
+{
+	*reg0 = val >> 32;
+	*reg1 = val;
+}
 
-phys_addr_t teec_virt2phys(void *vaddr);
-#endif /* TEE_SYSDEPS_H */
+/* Some Global Platform error codes used in this driver */
+#define TEEC_SUCCESS			0x00000000
+#define TEEC_ERROR_BAD_PARAMETERS	0xFFFF0006
+#define TEEC_ERROR_COMMUNICATION	0xFFFF000E
+#define TEEC_ERROR_OUT_OF_MEMORY	0xFFFF000C
+
+#define TEEC_ORIGIN_COMMS		0x00000002
+
+#endif /* TEEC_CORE_H */

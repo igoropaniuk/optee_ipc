@@ -12,14 +12,17 @@ all: libteec-portable
 LIB_NAME	:= libteec.a
 
 TEEC_SRCS	:= tee_client_api.c \
-		   teec_call.c
+		   teec_core.c \
+		   arch/arm/smc-call.S \
 
 TEEC_SRC_DIR	:= src
 TEEC_OBJ_DIR	:= $(OUT_DIR)
 TEEC_OBJS 	:= $(patsubst %.c,$(TEEC_OBJ_DIR)/%.o, $(TEEC_SRCS))
+
 TEEC_INCLUDES 	:= \
 		   ${CURDIR}/include \
 		   ${CURDIR}/../public \
+		   ${CURDUR}/arch/arm/include \
 
 TEEC_CFLAGS	:= $(addprefix -I, $(TEEC_INCLUDES)) $(CFLAGS) -D_GNU_SOURCE \
 		   -DDEBUGLEVEL_$(CFG_TEE_CLIENT_LOG_LEVEL) \

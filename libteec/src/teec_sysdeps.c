@@ -28,7 +28,7 @@
 
 #include <teec_sysdeps.h>
 
-void *teec_malloc(size_t size)
+void *teec_alloc(size_t size)
 {
 	return malloc(size);
 }
@@ -55,12 +55,12 @@ void teec_printv(const char* message, ...)
 	va_end(ap);
 }
 
-void teec_mutex_lock(teec_mutex_t *mu)
+void *teec_memcpy(void *str1, const void *str2, size_t n)
 {
-	pthread_mutex_lock(mu);
+	return memcpy(str1, str2, n);
 }
 
-void teec_mutex_unlock(teec_mutex_t *mu)
+phys_addr_t teec_virt2phys(void *vaddr)
 {
-	pthread_mutex_unlock(mu);
+	return (phys_addr_t) vaddr;
 }
